@@ -13,15 +13,15 @@ public:
 	virtual ~SpiFlashAnalyzer();
 	virtual void WorkerThread();
 
-	virtual U32 GenerateSimulationData( U64 newest_sample_requested, U32 sample_rate, SimulationChannelDescriptor** simulation_channels );
+	virtual U32 GenerateSimulationData(U64 newest_sample_requested, U32 sample_rate, SimulationChannelDescriptor** simulation_channels);
 	virtual U32 GetMinimumSampleRateHz();
 
 	virtual const char* GetAnalyzerName() const;
 	virtual bool NeedsRerun();
 
 protected: //vars
-	std::auto_ptr< SpiFlashAnalyzerSettings > mSettings;
-	std::auto_ptr< SpiFlashAnalyzerResults > mResults;
+	std::auto_ptr<SpiFlashAnalyzerSettings> mSettings;
+	std::auto_ptr<SpiFlashAnalyzerResults> mResults;
 	AnalyzerChannelData* mSerial;
 
 	SpiFlashSimulationDataGenerator mSimulationDataGenerator;
@@ -34,7 +34,7 @@ protected: //vars
 };
 
 extern "C" ANALYZER_EXPORT const char* __cdecl GetAnalyzerName();
-extern "C" ANALYZER_EXPORT Analyzer* __cdecl CreateAnalyzer( );
-extern "C" ANALYZER_EXPORT void __cdecl DestroyAnalyzer( Analyzer* analyzer );
+extern "C" ANALYZER_EXPORT Analyzer* __cdecl CreateAnalyzer();
+extern "C" ANALYZER_EXPORT void __cdecl DestroyAnalyzer(Analyzer* analyzer);
 
 #endif //SPIFLASH_ANALYZER_H

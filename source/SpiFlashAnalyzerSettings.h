@@ -16,12 +16,27 @@ public:
 	virtual const char* SaveSettings();
 
 
-	Channel mInputChannel;
-	U32 mBitRate;
+	Channel mChipSelect;
+	Channel mClock;
+	Channel mMosi;
+	Channel mMiso;
+	Channel mD2;
+	Channel mD3;
+	U32 mManufacturer;
+	U32 mAddressLength;
+	U32 mSpiMode;
 
 protected:
-	std::auto_ptr< AnalyzerSettingInterfaceChannel >	mInputChannelInterface;
-	std::auto_ptr< AnalyzerSettingInterfaceInteger >	mBitRateInterface;
+	std::auto_ptr<AnalyzerSettingInterfaceNumberList> mManufacturerInterface;
+	std::auto_ptr<AnalyzerSettingInterfaceNumberList> mAddressLengthInterface;
+	std::auto_ptr<AnalyzerSettingInterfaceNumberList> mSpiModeInterface;
+
+	std::auto_ptr<AnalyzerSettingInterfaceChannel> mChipSelectInterface;
+	std::auto_ptr<AnalyzerSettingInterfaceChannel> mClockInterface;
+	std::auto_ptr<AnalyzerSettingInterfaceChannel> mMosiInterface;
+	std::auto_ptr<AnalyzerSettingInterfaceChannel> mMisoInterface;
+	std::auto_ptr<AnalyzerSettingInterfaceChannel> mD2Interface;
+	std::auto_ptr<AnalyzerSettingInterfaceChannel> mD3Interface;
 };
 
 #endif //SPIFLASH_ANALYZER_SETTINGS

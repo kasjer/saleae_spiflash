@@ -5,10 +5,10 @@
 #include <iostream>
 #include <fstream>
 
-SpiFlashAnalyzerResults::SpiFlashAnalyzerResults( SpiFlashAnalyzer* analyzer, SpiFlashAnalyzerSettings* settings )
-:	AnalyzerResults(),
-	mSettings( settings ),
-	mAnalyzer( analyzer )
+SpiFlashAnalyzerResults::SpiFlashAnalyzerResults(SpiFlashAnalyzer* analyzer, SpiFlashAnalyzerSettings* settings)
+	: AnalyzerResults(),
+	mSettings(settings),
+	mAnalyzer(analyzer)
 {
 }
 
@@ -16,19 +16,19 @@ SpiFlashAnalyzerResults::~SpiFlashAnalyzerResults()
 {
 }
 
-void SpiFlashAnalyzerResults::GenerateBubbleText( U64 frame_index, Channel& channel, DisplayBase display_base )
+void SpiFlashAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& channel, DisplayBase display_base)
 {
 	ClearResultStrings();
-	Frame frame = GetFrame( frame_index );
+	Frame frame = GetFrame(frame_index);
 
 	char number_str[128];
-	AnalyzerHelpers::GetNumberString( frame.mData1, display_base, 8, number_str, 128 );
-	AddResultString( number_str );
+	AnalyzerHelpers::GetNumberString(frame.mData1, display_base, 8, number_str, 128);
+	AddResultString(number_str);
 }
 
-void SpiFlashAnalyzerResults::GenerateExportFile( const char* file, DisplayBase display_base, U32 export_type_user_id )
+void SpiFlashAnalyzerResults::GenerateExportFile(const char* file, DisplayBase display_base, U32 export_type_user_id)
 {
-	std::ofstream file_stream( file, std::ios::out );
+	std::ofstream file_stream(file, std::ios::out);
 
 	U64 trigger_sample = mAnalyzer->GetTriggerSample();
 	U32 sample_rate = mAnalyzer->GetSampleRate();
@@ -36,19 +36,19 @@ void SpiFlashAnalyzerResults::GenerateExportFile( const char* file, DisplayBase 
 	file_stream << "Time [s],Value" << std::endl;
 
 	U64 num_frames = GetNumFrames();
-	for( U32 i=0; i < num_frames; i++ )
+	for (U32 i = 0; i < num_frames; i++)
 	{
-		Frame frame = GetFrame( i );
+		Frame frame = GetFrame(i);
 
 		char time_str[128];
-		AnalyzerHelpers::GetTimeString( frame.mStartingSampleInclusive, trigger_sample, sample_rate, time_str, 128 );
+		AnalyzerHelpers::GetTimeString(frame.mStartingSampleInclusive, trigger_sample, sample_rate, time_str, 128);
 
 		char number_str[128];
-		AnalyzerHelpers::GetNumberString( frame.mData1, display_base, 8, number_str, 128 );
+		AnalyzerHelpers::GetNumberString(frame.mData1, display_base, 8, number_str, 128);
 
 		file_stream << time_str << "," << number_str << std::endl;
 
-		if( UpdateExportProgressAndCheckForCancel( i, num_frames ) == true )
+		if (UpdateExportProgressAndCheckForCancel(i, num_frames) == true)
 		{
 			file_stream.close();
 			return;
@@ -58,24 +58,24 @@ void SpiFlashAnalyzerResults::GenerateExportFile( const char* file, DisplayBase 
 	file_stream.close();
 }
 
-void SpiFlashAnalyzerResults::GenerateFrameTabularText( U64 frame_index, DisplayBase display_base )
+void SpiFlashAnalyzerResults::GenerateFrameTabularText(U64 frame_index, DisplayBase display_base)
 {
-	Frame frame = GetFrame( frame_index );
+	Frame frame = GetFrame(frame_index);
 	ClearResultStrings();
 
 	char number_str[128];
-	AnalyzerHelpers::GetNumberString( frame.mData1, display_base, 8, number_str, 128 );
-	AddResultString( number_str );
+	AnalyzerHelpers::GetNumberString(frame.mData1, display_base, 8, number_str, 128);
+	AddResultString(number_str);
 }
 
-void SpiFlashAnalyzerResults::GeneratePacketTabularText( U64 packet_id, DisplayBase display_base )
+void SpiFlashAnalyzerResults::GeneratePacketTabularText(U64 packet_id, DisplayBase display_base)
 {
 	ClearResultStrings();
-	AddResultString( "not supported" );
+	AddResultString("not supported");
 }
 
-void SpiFlashAnalyzerResults::GenerateTransactionTabularText( U64 transaction_id, DisplayBase display_base )
+void SpiFlashAnalyzerResults::GenerateTransactionTabularText(U64 transaction_id, DisplayBase display_base)
 {
 	ClearResultStrings();
-	AddResultString( "not supported" );
+	AddResultString("not supported");
 }

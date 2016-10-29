@@ -7,23 +7,26 @@ class SpiFlashAnalyzerSettings;
 
 class SpiFlashSimulationDataGenerator
 {
+	void GenerateNext();
 public:
 	SpiFlashSimulationDataGenerator();
 	~SpiFlashSimulationDataGenerator();
 
-	void Initialize( U32 simulation_sample_rate, SpiFlashAnalyzerSettings* settings );
-	U32 GenerateSimulationData( U64 newest_sample_requested, U32 sample_rate, SimulationChannelDescriptor** simulation_channel );
+	void Initialize(U32 simulation_sample_rate, SpiFlashAnalyzerSettings* settings);
+	U32 GenerateSimulationData(U64 newest_sample_requested, U32 sample_rate, SimulationChannelDescriptor** simulation_channel);
 
 protected:
 	SpiFlashAnalyzerSettings* mSettings;
 	U32 mSimulationSampleRateHz;
 
 protected:
-	void CreateSerialByte();
-	std::string mSerialText;
-	U32 mStringIndex;
+	SimulationChannelDescriptorGroup mSimulationChannels;
 
-	SimulationChannelDescriptor mSerialSimulationData;
-
+	SimulationChannelDescriptor *mChipSelectSimulationData;
+	SimulationChannelDescriptor *mClockSimulationData;
+	SimulationChannelDescriptor *mMosiSimulationData;
+	SimulationChannelDescriptor *mMisoSimulationData;
+	SimulationChannelDescriptor *mD2SimulationData;
+	SimulationChannelDescriptor *mD3SimulationData;
 };
 #endif //SPIFLASH_SIMULATION_DATA_GENERATOR
