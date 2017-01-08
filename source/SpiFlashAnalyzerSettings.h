@@ -25,11 +25,13 @@ public:
 	U32 mManufacturer;
 	U32 mAddressLength;
 	U32 mSpiMode;
+	U32 mBusMode;
 
 protected:
 	std::auto_ptr<AnalyzerSettingInterfaceNumberList> mManufacturerInterface;
 	std::auto_ptr<AnalyzerSettingInterfaceNumberList> mAddressLengthInterface;
 	std::auto_ptr<AnalyzerSettingInterfaceNumberList> mSpiModeInterface;
+	std::auto_ptr<AnalyzerSettingInterfaceNumberList> mBusModeInterface;
 
 	std::auto_ptr<AnalyzerSettingInterfaceChannel> mChipSelectInterface;
 	std::auto_ptr<AnalyzerSettingInterfaceChannel> mClockInterface;

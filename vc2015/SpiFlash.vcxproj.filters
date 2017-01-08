@@ -27,6 +27,9 @@
     <ClCompile Include="..\source\SpiFlashSimulationDataGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\SpiFlash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\SpiFlashAnalyzer.h">
@@ -39,6 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\SpiFlashSimulationDataGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\SpiFlash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

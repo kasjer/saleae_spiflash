@@ -1,5 +1,6 @@
 #include "SpiFlashAnalyzerSettings.h"
 #include <AnalyzerHelpers.h>
+#include "SpiFlash.h"
 
 SpiFlashAnalyzerSettings::SpiFlashAnalyzerSettings() :
 	mChipSelect(UNDEFINED_CHANNEL),
@@ -8,9 +9,10 @@ SpiFlashAnalyzerSettings::SpiFlashAnalyzerSettings() :
 	mMiso(UNDEFINED_CHANNEL),
 	mD2(UNDEFINED_CHANNEL),
 	mD3(UNDEFINED_CHANNEL),
-	mManufacturer(0xEF),
+	mManufacturer(0),
 	mAddressLength(24),
-	mSpiMode(0)
+	mSpiMode(0xFF),
+	mBusMode(1)
 {
 	mChipSelectInterface.reset(new AnalyzerSettingInterfaceChannel());
 	mChipSelectInterface->SetTitleAndTooltip("CS", "Select Chip select line");
@@ -40,15 +42,12 @@ SpiFlashAnalyzerSettings::SpiFlashAnalyzerSettings() :
 
 	mManufacturerInterface.reset(new AnalyzerSettingInterfaceNumberList());
 	mManufacturerInterface->SetTitleAndTooltip("Manufacturer", "Select flash manufacturer");
-	mManufacturerInterface->AddNumber(0x1F, "Adesto", "");
-	mManufacturerInterface->AddNumber(0x01, "Cypress", "");
-	mManufacturerInterface->AddNumber(0xC8, "GigaDevice", "");
-	mManufacturerInterface->AddNumber(0x9D, "ISSI", "");
-	mManufacturerInterface->AddNumber(0xC2, "Macronix", "");
-	mManufacturerInterface->AddNumber(0xBF, "Microchip", "");
-	mManufacturerInterface->AddNumber(0x20, "Micron", "");
-	mManufacturerInterface->AddNumber(0xEF, "Winbond", "");
+	for (size_t i = 0; i < spiFlash.getCommandSets().size(); ++i)
+		mManufacturerInterface->AddNumber(spiFlash.getCommandSets()[i]->GetId(),
+			spiFlash.getCommandSets()[i]->GetName().c_str(), "");
+
 	mManufacturerInterface->SetNumber(mManufacturer);
+	spiFlash.SelectCmdSet(mManufacturer);
 
 	mAddressLengthInterface.reset(new AnalyzerSettingInterfaceNumberList());
 	mAddressLengthInterface->SetTitleAndTooltip("Address", "Select address length");
@@ -58,10 +57,17 @@ SpiFlashAnalyzerSettings::SpiFlashAnalyzerSettings() :
 
 	mSpiModeInterface.reset(new AnalyzerSettingInterfaceNumberList());
 	mSpiModeInterface->SetTitleAndTooltip("SPI Mode", "Select SPI mode");
-	mSpiModeInterface->AddNumber(0, "Auto", "");
-	mSpiModeInterface->AddNumber(1, "SPI Mode 0", "");
-	mSpiModeInterface->AddNumber(2, "SPI Mode 3", "");
+	mSpiModeInterface->AddNumber(0xFF, "Auto", "");
+	mSpiModeInterface->AddNumber(0, "SPI Mode 0", "");
+	mSpiModeInterface->AddNumber(3, "SPI Mode 3", "");
 	mSpiModeInterface->SetNumber(mSpiMode);
+
+	mBusModeInterface.reset(new AnalyzerSettingInterfaceNumberList());
+	mBusModeInterface->SetTitleAndTooltip("Start in", "Number of lines used for command transmission");
+	mBusModeInterface->AddNumber(1, "Single", "");
+	mBusModeInterface->AddNumber(2, "Dual", "");
+	mBusModeInterface->AddNumber(4, "Quad", "");
+	mBusModeInterface->SetNumber(mBusMode);
 
 	AddInterface(mChipSelectInterface.get());
 	AddInterface(mClockInterface.get());
@@ -72,6 +78,7 @@ SpiFlashAnalyzerSettings::SpiFlashAnalyzerSettings() :
 	AddInterface(mManufacturerInterface.get());
 	AddInterface(mAddressLengthInterface.get());
 	AddInterface(mSpiModeInterface.get());
+	AddInterface(mBusModeInterface.get());
 
 	AddExportOption(0, "Export as text/csv file");
 	AddExportExtension(0, "text", "txt");
@@ -96,6 +103,7 @@ bool SpiFlashAnalyzerSettings::SetSettingsFromInterfaces()
 	mManufacturer = U32(mManufacturerInterface->GetNumber());
 	mAddressLength = U32(mAddressLengthInterface->GetNumber());
 	mSpiMode = U32(mSpiModeInterface->GetNumber());
+	mBusMode = U32(mBusModeInterface->GetNumber());
 	mChipSelect = mChipSelectInterface->GetChannel();
 	mClock = mClockInterface->GetChannel();
 	mMosi = mMosiInterface->GetChannel();
@@ -120,6 +128,7 @@ void SpiFlashAnalyzerSettings::UpdateInterfacesFromSettings()
 	mManufacturerInterface->SetNumber(mManufacturer);
 	mAddressLengthInterface->SetNumber(mAddressLength);
 	mSpiModeInterface->SetNumber(mSpiMode);
+	mBusModeInterface->SetNumber(mBusMode);
 	mChipSelectInterface->SetChannel(mChipSelect);
 	mClockInterface->SetChannel(mClock);
 	mMosiInterface->SetChannel(mMosi);
@@ -136,6 +145,7 @@ void SpiFlashAnalyzerSettings::LoadSettings(const char* settings)
 	text_archive >> mManufacturer;
 	text_archive >> mAddressLength;
 	text_archive >> mSpiMode;
+	text_archive >> mBusMode;
 	text_archive >> mChipSelect;
 	text_archive >> mClock;
 	text_archive >> mMosi;
@@ -161,6 +171,7 @@ const char* SpiFlashAnalyzerSettings::SaveSettings()
 	text_archive << mManufacturer;
 	text_archive << mAddressLength;
 	text_archive << mSpiMode;
+	text_archive << mBusMode;
 	text_archive << mChipSelect;
 	text_archive << mClock;
 	text_archive << mMosi;

@@ -3,6 +3,18 @@
 
 #include <AnalyzerResults.h>
 
+enum FrameType
+{
+	FT_OUT_BYTE,
+	FT_OUT_ADDR24,
+	FT_OUT_ADDR32,
+	FT_IN_BYTE,
+	FT_CMD,
+	FT_DUMMY,
+	FT_IN_OUT,
+	FT_M,
+};
+
 class SpiFlashAnalyzer;
 class SpiFlashAnalyzerSettings;
 
