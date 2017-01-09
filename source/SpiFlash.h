@@ -433,7 +433,7 @@ public:
 		if (mCurrentCmd)
 			mCurrentCmd->Set(dc);
 	}
-	SpiFlash &operator+(BitField &field)
+	SpiFlash &operator+(const BitField &field)
 	{
 		if (mActiveCmdSet)
 			mActiveCmdSet->AddRegisterField(field);
