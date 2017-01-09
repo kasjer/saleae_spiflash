@@ -345,7 +345,7 @@ void SpiFlashAnalyzer::AnalyzeCommandBits()
 
 	union
 	{
-		SpiCmdData *data = nullptr;
+		SpiCmdData *data;
 		intptr_t code;
 	} cmd;
 	U64 cmdExtra;
@@ -359,6 +359,7 @@ void SpiFlashAnalyzer::AnalyzeCommandBits()
 
 	U8 m;
 
+	cmd.data = nullptr;
 	mResults->CommitPacketAndStartNewPacket();
 
 	mDirIn = false;
