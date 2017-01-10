@@ -52,7 +52,8 @@ SpiFlashAnalyzerSettings::SpiFlashAnalyzerSettings() :
 	mAddressLengthInterface.reset(new AnalyzerSettingInterfaceNumberList());
 	mAddressLengthInterface->SetTitleAndTooltip("Address", "Select address length");
 	mAddressLengthInterface->AddNumber(24, "24 bits", "");
-	mAddressLengthInterface->AddNumber(32, "32 bits", "");
+	// TODO: Restore 32 bits
+	//mAddressLengthInterface->AddNumber(32, "32 bits", "");
 	mAddressLengthInterface->SetNumber(mAddressLength);
 
 	mSpiModeInterface.reset(new AnalyzerSettingInterfaceNumberList());
