@@ -121,6 +121,8 @@ bool SpiFlashAnalyzerSettings::SetSettingsFromInterfaces()
 	AddChannel(mD2, "D2", true);
 	AddChannel(mD3, "D3", true);
 
+	spiFlash.SelectCmdSet(mManufacturer);
+
 	return true;
 }
 
