@@ -72,12 +72,38 @@ void SpiFlashAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& chann
 			}
 		}
 	}
+	else if (frame.mType == FT_CMD_BYTE && channel == mSettings->mMosi)
+	{
+		SpiCmdData *cmd = reinterpret_cast<SpiCmdData *>(frame.mData2);
+		if (frame.mData2 == 0x100)
+			AddResultString("?"); // Not enough bits
+		else if (frame.mData2 < 0x100)
+		{
+			// Normal byte and CMD=0xXX
+			AnalyzerHelpers::GetNumberString(frame.mData2, display_base, 8, number_str, 128);
+			AddResultString(number_str);
+			AnalyzerHelpers::GetNumberString(frame.mData2, Hexadecimal, 8, number_str, 128);
+			AddResultString("CMD=", number_str);
+		}
+		else
+		{
+			size_t i;
+			U8 b = cmd->GetCode();
+			AnalyzerHelpers::GetNumberString(b, display_base, 8, number_str, 128);
+			AddResultString(number_str);
+			AnalyzerHelpers::GetNumberString(b, Hexadecimal, 8, number_str, 128);
+			AddResultString("CMD=", number_str);
+			for (i = 0; i < cmd->mNames.size(); ++i)
+				AddResultString(cmd->mNames[i].c_str());
+			AddResultString(cmd->mNames[i - 1].c_str(), " CMD=", number_str);
+		}
+	}
 	else if (frame.mType == FT_OUT_ADDR24 && channel == mSettings->mMosi)
 	{
-		AnalyzerHelpers::GetNumberString(frame.mData1, display_base, 24, number_str, 128);
-		AddResultString(number_str);
 		AnalyzerHelpers::GetNumberString(frame.mData1, Hexadecimal, AddressBits(U32(frame.mData1 >> 24)),
 			number_str, 128);
+		AddResultString("A");
+		AddResultString(number_str);
 		AddResultString("A=", number_str);
 	}
 	else if ((frame.mType == FT_OUT_BYTE || frame.mType == FT_IN_OUT) && channel == mSettings->mMosi)
@@ -88,6 +114,7 @@ void SpiFlashAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& chann
 	else if ((frame.mType == FT_M) && channel == mSettings->mMosi)
 	{
 		AnalyzerHelpers::GetNumberString(frame.mData1, display_base, 8, number_str, 128);
+		AddResultString("M");
 		AddResultString(number_str);
 		AnalyzerHelpers::GetNumberString(frame.mData1, Hexadecimal, 8, number_str, 128);
 		AddResultString("M=", number_str);

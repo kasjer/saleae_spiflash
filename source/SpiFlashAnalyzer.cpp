@@ -385,7 +385,7 @@ void SpiFlashAnalyzer::AnalyzeCommandBits()
 				cmd.code = (int)val;
 
 			// Add command to MOSI line
-			AddFrame(start, end, val, 0, FT_OUT_BYTE, 0);
+			AddFrame(start, end, val, reinterpret_cast<U64>(cmd.data), FT_CMD_BYTE, 0);
 		}
 
 		if (cmd.code > 0x100)

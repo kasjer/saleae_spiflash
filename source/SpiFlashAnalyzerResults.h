@@ -10,6 +10,7 @@ enum FrameType
 	FT_OUT_ADDR32,
 	FT_IN_BYTE,
 	FT_CMD,
+	FT_CMD_BYTE,
 	FT_DUMMY,
 	FT_IN_OUT,
 	FT_M,
