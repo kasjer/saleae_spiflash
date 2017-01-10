@@ -222,6 +222,21 @@ void addCommands(SpiFlash &spiFlash)
 		+ Cmd1(0x2F, "WRSCUR", "Write Security Register")
 		+ Cmd1(0xAB, "RES", "Read Electronic ID") + DummyBytes(3) + OP_DATA_READ
 		+ Cmd1(0x32, "QPP", "Quad Input Page Program") + QUAD_DATA + ADDR + OP_DATA_WRITE
+
+		+ CommandSet(0xC8, "GigaDevice", 0xEF)
+		+ CommandSet(0x1F, "Adesto", 0)
+		+ Cmd14(0xB1, "ENSO", "Enter Secured OTP")
+		+ Cmd14(0xC1, "EXSO", "Exit Secured OTP")
+		+ Cmd14(0x2B, "RDSCUR", "Read Security Register")
+		+ Cmd14(0x2F, "WRSCUR", "Write Security Register")
+		+ Cmd1(0x38, "*4", "QPI", "Enter QPI Mode") + SET_QUAD
+		+ Cmd4(0xff, "*1", "Exit QPI Mode") + SET_SINGLE
+		+ Cmd4(0x0C, "BRW", "Burst Read with Wrap") + ADDR + M + DummyBytes(1) + OP_DATA_READ
+		+ Cmd4(0xC0, "SRP", "Set Read Parameters") + OP_DATA_WRITE
+		+ Cmd14(0x33, "QPP", "Quad Input Page Program") + QUAD_DATA + ADDR + OP_DATA_WRITE
+		+ Cmd1(0x94, "MFID", "Read manufacturer, Device ID QUAD I/O") + QUAD_IO + ADDR + M + DummyBytes(2) + OP_DATA_READ
+		+ Cmd14(0xE7, "R", "R 1-4-4", "Word Read Quad I/O") + QUAD_IO + ADDR + M + DummyBytes(1) + OP_DATA_READ
+		+ Cmd1(0x77, "Set Burst with Wrap") + QUAD_IO + DummyBytes(3) + OP_DATA_WRITE
 		;
 }
 
