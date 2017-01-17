@@ -38,6 +38,7 @@ struct BitField
 	U8 mLowerBit;
 	BitField(U8 pos, const char *name) : mUpperBit(pos), mLowerBit(pos), mFieldName(name) {}
 	BitField(U8 upper, U8 lower, const char *name) : mUpperBit(upper), mLowerBit(lower), mFieldName(name) {}
+	U32 GetValue(U64 reg) const { return U32((reg & ((1 << (mUpperBit + 1)) - 1)) >> mLowerBit); }
 };
 
 typedef BitField Bit;
@@ -53,6 +54,9 @@ public:
 	RegisterData(const RegisterData &o) : mBits(o.mBits), mName(o.mName), mLen(o.mLen) {}
 	void SetLength(U8 len) { mLen = len; }
 	const std::string GetName() const { return mName; }
+	size_t GetBitfieldCount(void) { return mBits.size(); }
+	const BitField &at(size_t ix) { return mBits.at(ix); }
+
 	void AddBitField(const BitField &field)
 	{
 		mBits.push_back(field);
@@ -209,6 +213,7 @@ public:
 
 	void AddName(const char *name) { mNames.push_back(name); }
 	void AddReg(RegisterData *reg) { mRegs.push_back(reg); }
+	RegisterData *GetRegister(size_t ix) { return mRegs.size() ? mRegs.at(ix % mRegs.size()) : nullptr; }
 
 	void Set(CmdFeature feature)
 	{

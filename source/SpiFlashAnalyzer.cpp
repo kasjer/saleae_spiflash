@@ -474,12 +474,20 @@ void SpiFlashAnalyzer::AnalyzeCommandBits()
 				break;
 			case OP_REG_WRITE:
 				while (ExtractBits(start, end, val, 8) >= 0)
-					AddFrame(start, end, val, 0, FT_OUT_BYTE, 0);
+				{
+					AddFrame(start, end, val,
+						reinterpret_cast<U64>(cmd.data->GetRegister(cmdExtra)), FT_OUT_REG, 0);
+					cmdExtra++;
+				}
 				break;
 			case OP_REG_READ:
 				mDirIn = true;
 				while (ExtractBits(start, end, val, 8) >= 0)
-					AddFrame(start, end, 0, val, FT_IN_BYTE, 0);
+				{
+					AddFrame(start, end, reinterpret_cast<U64>(cmd.data->GetRegister(cmdExtra)),
+						val, FT_IN_REG, 0);
+					cmdExtra++;
+				}
 				break;
 			}
 			// Commands like Enter QPI or Exit QPI change bus mode

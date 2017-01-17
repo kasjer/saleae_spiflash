@@ -9,6 +9,7 @@ Most flashes can work in SPI mode 0 and 3, analyzer can detect this set it autom
 - Single, dual and quad mode
 - Commands for changing between single and quad or dual mode detected
 - Continues read mode detected
+- Register bit fields decoded
 - Following manufacturers command sets supported:
   - Winbond
   - Macronix
@@ -23,7 +24,6 @@ Simply put SpiFlash.dll in the Saleae *Analyzers* folder (typically: C:\Program 
 - More manufacturers (Micron, Microchip, Issi, Cypress)
 - 32 addressing mode
 - Custom dummy cycles (now only default manufacturer specific dummy cycle count is used, but some flashes have commands with dummy cycles that can be changed)
-- Register interpretation
 - Make CS optional (this could allow to analyze with higher bit rate)
 
 ## To consider

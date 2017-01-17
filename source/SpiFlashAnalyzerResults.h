@@ -37,13 +37,18 @@ enum FrameType
 	FT_DUMMY,
 	FT_IN_OUT,
 	FT_M,
+	FT_IN_REG,
+	FT_OUT_REG,
 };
 
 class SpiFlashAnalyzer;
 class SpiFlashAnalyzerSettings;
+class RegisterData;
 
 class SpiFlashAnalyzerResults : public AnalyzerResults
 {
+	void AddResult(const std::string &str) { AddResultString(str.c_str()); }
+	void AddRegisterResult(RegisterData *reg, U64 val, DisplayBase display_base);
 public:
 	SpiFlashAnalyzerResults( SpiFlashAnalyzer* analyzer, SpiFlashAnalyzerSettings* settings );
 	virtual ~SpiFlashAnalyzerResults();

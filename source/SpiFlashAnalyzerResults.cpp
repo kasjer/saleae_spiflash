@@ -27,6 +27,7 @@ SOFTWARE.
 #include "SpiFlashAnalyzerSettings.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 #include "SpiFlash.h"
 
@@ -53,6 +54,35 @@ static int AddressBits(U32 addr)
 		return 32;
 }
 
+static std::string RegisterString(RegisterData *reg, U64 val, bool full = false)
+{
+	std::stringstream s;
+
+	for (size_t i = 0; i < reg->GetBitfieldCount(); ++i)
+	{
+		const BitField &bitField = reg->at(i);
+		U32 bitsValue = bitField.GetValue(val);
+		if (bitsValue || full)
+			s << (s.tellp() ? " " : "") << bitField.mFieldName << "=" << std::hex << bitsValue;
+	}
+	return s.str();
+}
+
+void SpiFlashAnalyzerResults::AddRegisterResult(RegisterData *reg, U64 val, DisplayBase display_base)
+{
+	char number_str[128];
+	AnalyzerHelpers::GetNumberString(val, display_base, 8, number_str, 128);
+	AddResultString(number_str);
+	// There is register assigned
+	if (reg)
+	{
+		std::string s = RegisterString(reg, val);
+		if (s.size())
+			AddResult(s);
+		AddResult(RegisterString(reg, val, true));
+	}
+}
+
 void SpiFlashAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& channel, DisplayBase display_base)
 {
 	ClearResultStrings();
@@ -60,6 +90,8 @@ void SpiFlashAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& chann
 
 	char number_str[128];
 	char number_str2[10];
+	std::stringstream fulls, shorts;
+
 	if (frame.mType == FT_CMD && channel == mSettings->mChipSelect)
 	{
 		SpiCmdData *cmd = reinterpret_cast<SpiCmdData *>(frame.mData2);
@@ -133,6 +165,14 @@ void SpiFlashAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& chann
 	{
 		AnalyzerHelpers::GetNumberString(frame.mData1, display_base, 8, number_str, 128);
 		AddResultString(number_str);
+	}
+	else if (frame.mType == FT_IN_REG && channel == mSettings->mMiso)
+	{
+		AddRegisterResult(reinterpret_cast<RegisterData *>(frame.mData1), frame.mData2, display_base);
+	}
+	else if (frame.mType == FT_OUT_REG && channel == mSettings->mMosi)
+	{
+		AddRegisterResult(reinterpret_cast<RegisterData *>(frame.mData2), frame.mData1, display_base);
 	}
 	else if ((frame.mType == FT_M) && channel == mSettings->mMosi)
 	{
