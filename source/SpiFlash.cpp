@@ -235,14 +235,19 @@ void addCommands(SpiFlash &spiFlash)
 
 		+ Cmd14(0xff, "*1", "Exit QPI Mode") + SET_SINGLE
 		+ CommandSet(0xC2, "Macronix", 0)
-		+ Cmd1(0x15, "RDCR", "Read configuration register") + RegisterRead("Configuration Register")
+		+ Register("Status Register-1", 8) + Bit(7, "SRWD") + Bit(6, 2, "BPB") + Bit(1, "WEL") + Bit(0, "WIP")
+		+ Register("Configuration Register-1", 8) + Bit(6, "DC") + Bit(3, "TB")
+		+ Register("Configuration Register-2", 8) + Bit(1, "L/H")
+		+ Register("Security Register", 8) + Bit(6, "E_FAIL") + Bit(5, "P_FAIL") + Bit(3, "ESB") + Bit(2, "PSB") + Bit(1, "LDSO") + Bit(0, "SOTP")
+		+ Cmd1(0x01, "WSRS", "Write status register") + RegisterWrite("Status Register-1") + RegisterWrite("Configuration Register-1") + RegisterWrite("Configuration Register-1")
+		+ Cmd1(0x15, "RDCR", "Read configuration register") + RegisterRead("Configuration Register-1") + RegisterRead("Configuration Register-2")
 		+ Cmd1(0xB0, "SUSP", "Erase/Program Suspend")
 		+ Cmd1(0x30, "RESM", "Erase/Program Resume")
 		+ Cmd1(0xC0, "SBL", "Set Burst Length") + OP_DATA_WRITE
 		+ Cmd1(0xB1, "ENSO", "Enter Secured OTP")
 		+ Cmd1(0xC1, "EXSO", "Exit Secured OTP")
-		+ Cmd1(0x2B, "RDSCUR", "Read Security Register")
-		+ Cmd1(0x2F, "WRSCUR", "Write Security Register")
+		+ Cmd1(0x2B, "RDSCUR", "Read Security Register") + RegisterRead("Security Register")
+		+ Cmd1(0x2F, "WRSCUR", "Write Security Register") + RegisterWrite("Security Register")
 		+ Cmd1(0xAB, "RES", "Read Electronic ID") + DummyBytes(3) + OP_DATA_READ
 		+ Cmd1(0x32, "QPP", "Quad Input Page Program") + QUAD_DATA + ADDR + OP_DATA_WRITE
 
