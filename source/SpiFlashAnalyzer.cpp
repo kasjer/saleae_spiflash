@@ -476,7 +476,7 @@ void SpiFlashAnalyzer::AnalyzeCommandBits()
 				while (ExtractBits(start, end, val, 8) >= 0)
 				{
 					AddFrame(start, end, val,
-						reinterpret_cast<U64>(cmd.data->GetRegister(cmdExtra)), FT_OUT_REG, 0);
+						reinterpret_cast<U64>(cmd.data->GetRegister(size_t(cmdExtra))), FT_OUT_REG, 0);
 					cmdExtra++;
 				}
 				break;
@@ -484,7 +484,7 @@ void SpiFlashAnalyzer::AnalyzeCommandBits()
 				mDirIn = true;
 				while (ExtractBits(start, end, val, 8) >= 0)
 				{
-					AddFrame(start, end, reinterpret_cast<U64>(cmd.data->GetRegister(cmdExtra)),
+					AddFrame(start, end, reinterpret_cast<U64>(cmd.data->GetRegister(size_t(cmdExtra))),
 						val, FT_IN_REG, 0);
 					cmdExtra++;
 				}
