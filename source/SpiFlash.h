@@ -214,6 +214,7 @@ public:
 	void AddName(const char *name) { mNames.push_back(name); }
 	void AddReg(RegisterData *reg) { mRegs.push_back(reg); }
 	RegisterData *GetRegister(size_t ix) { return mRegs.size() ? mRegs.at(ix % mRegs.size()) : nullptr; }
+	size_t RegisterCount() const { return mRegs.size(); }
 
 	void Set(CmdFeature feature)
 	{

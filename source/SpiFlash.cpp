@@ -125,7 +125,7 @@ void SpiFlash::GenerateCommandBits(SpiCmdData *cmd, std::vector<U8> &bits)
 	case OP_REG_READ:
 	case OP_REG_WRITE:
 		// For register read or write just one or to bytes
-		n = 1 + rand() % 2;
+		n = (int)cmd->RegisterCount();
 		break;
 	case OP_DATA_READ:
 	case OP_DATA_WRITE:
