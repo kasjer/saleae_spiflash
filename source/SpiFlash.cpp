@@ -247,6 +247,8 @@ void addCommands(SpiFlash &spiFlash)
 		+ Cmd1(0x32, "QPP", "Quad Input Page Program") + QUAD_DATA + ADDR + OP_DATA_WRITE
 
 		+ CommandSet(0xC8, "GigaDevice", 0xEF)
+		+ Register("Status Register-1", 8) + Bit(7, "SRP0") + Bit(6, 2, "BPB") + Bit(1, "WEL") + Bit(0, "BUSY")
+		+ Register("Status Register-2", 8) + Bit(7, "SUS1") + Bit(6, "CMP") + Bit(5, 3, "LB") + Bit(2, "SUS2") + Bit(1, "QE") + Bit(0, "SRP1")
 		+ CommandSet(0x1F, "Adesto", 0)
 		+ Cmd14(0xB1, "ENSO", "Enter Secured OTP")
 		+ Cmd14(0xC1, "EXSO", "Exit Secured OTP")
