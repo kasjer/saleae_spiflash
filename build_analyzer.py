@@ -41,7 +41,9 @@ os.chdir( ".." )
 include_paths = [ "../include" ]
 link_paths = [ "../lib" ]
 link_dependencies = [ "-lAnalyzer" ] #refers to libAnalyzer.dylib or libAnalyzer.so
-link_dependencies = [ "-lAnalyzer64" ] #refers to libAnalyzer.dylib or libAnalyzer.so
+# for Linux64 assume that Logic is also 64bit
+if platform.system().lower() == "linux" and platform.architecture()[0] == '64bit':
+  link_dependencies = [ "-lAnalyzer64" ] #refers to libAnalyzer64.so
 
 debug_compile_flags = "-O0 -w -c -fpic -g -std=c++0x"
 release_compile_flags = "-O3 -w -c -fpic -std=c++0x"
