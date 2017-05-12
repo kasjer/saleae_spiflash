@@ -24,6 +24,7 @@ SOFTWARE.
 #ifndef SPIFLASH_H
 #define SPIFLASH_H
 
+#include <string>
 #include <algorithm>
 #include <vector>
 #include <map>
