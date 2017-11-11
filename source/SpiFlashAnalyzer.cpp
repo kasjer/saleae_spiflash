@@ -308,6 +308,7 @@ int SpiFlashAnalyzer::ExtractBits(U64 &start, U64 &end, U32 &val, U8 neededBits)
 	while (bitCount < neededBits)
 	{
 		AdvanceDataToAbsPosition(mCachedClocks[i] >> 1);
+		mResults->AddMarker(mCachedClocks[i] >> 1, AnalyzerResults::UpArrow, mSettings->mClock);
 		val <<= busMode;
 		val |= GetBits(busMode, mDirIn);
 		bitCount += busMode;
