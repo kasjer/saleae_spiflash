@@ -268,6 +268,32 @@ void addCommands(SpiFlash &spiFlash)
 		+ Cmd1(0x94, "MFID", "Read manufacturer, Device ID QUAD I/O") + QUAD_IO + ADDR + M + DummyBytes(2) + OP_DATA_READ
 		+ Cmd14(0xE7, "R", "R 1-4-4", "Word Read Quad I/O") + QUAD_IO + ADDR + M + DummyBytes(1) + OP_DATA_READ
 		+ Cmd1(0x77, "Set Burst with Wrap") + QUAD_IO + DummyBytes(3) + OP_DATA_WRITE
+
+		+ CommandSet(0x01, "Cypress", 0)
+		+ Register("Status Register-1", 8) + Bit(7, "SRP0") + Bit(6, "TPB") + Bit(5, "TP") + Bit(4, 2, "BPB") + Bit(1, "WEL") + Bit(0, "BUSY")
+		+ Register("Status Register-2", 8) + Bit(7, "SUS") + Bit(6, "CMP") + Bit(5, 3, "LB") + Bit(1, "QE") + Bit(0, "SRP1")
+		+ Register("Status Register-3", 8) + Bit(7, "RFU") + Bit(6, 5, "W6:5") + Bit(4, "W4") + Bit(3, 0, "LC")
+		+ Cmd1(0x05, "RDSR1", "Read Status Register-1") + RegisterRead("Status Register-1")
+		+ Cmd1(0x50, "WRENVSR", "Write Enable for Volatile Status Register")
+		+ Cmd1(0x01, "WS1", "Write status registers") + RegisterWrite("Status Register-1") + RegisterWrite("Status Register-2") + RegisterWrite("Status Register-3") +
+		+ Cmd1(0x07, "RDSR2", "Read Status Register-2") + RegisterRead("Status Register-2")
+		+ Cmd1(0x35, "RDCR", "Read Configuration Register") + RegisterWrite("Status Register-2")
+		+ Cmd1(0x33, "RDSR3", "Read Status register-3") + RegisterRead("Status Register-3")
+		+ Cmd1(0x01, "WRR", "Write Status Registers") + RegisterWrite("Status Register-1")
+		+ Cmd1(0xB9, "BRAC", "Bank Register Access")
+		+ Cmd1(0x17, "BRWR", "Bank Register Write")
+		+ Cmd1(0x18, "ECCRD", "ECC Statuc Register Read") + ADDR + DummyBytes(1) + OP_DATA_READ
+		+ Cmd1(0x14, "ABRD", "Auto Boot Register Read")
+		+ Cmd1(0x14, "ABWR", "Auto Boot Register Write")
+		+ Cmd1(0x43, "PNVDLR", "Programm NVDLR") + OP_DATA_WRITE
+		+ Cmd1(0x4A, "WVDLR", "Write VDLR") + OP_DATA_WRITE
+		+ Cmd1(0x41, "DLPRD", "Data Learning Patter Read") + OP_DATA_READ
+		+ Cmd1(0x30, "CLSR", "Clear Status Register")
+		+ Cmd1(0x77, "Set Burst with Wrap") + QUAD_IO + DummyBytes(3) + OP_DATA_WRITE
+		+ Cmd1(0x39, "Set Block/Pointer protection") + ADDR
+		+ Cmd1(0x48, "Read Security Registers") + ADDR + DummyBytes(1) + OP_DATA_READ
+		+ Cmd1(0x44, "Erase Security Registers") + ADDR
+		+ Cmd1(0x42, "Program Security Registers") + ADDR + OP_DATA_WRITE
 		;
 }
 
