@@ -18,7 +18,10 @@ Most flashes can work in SPI mode 0 and 3, analyzer can detect this set it autom
 
 # Installation
 
-Simply put SpiFlash.dll in the Saleae *Analyzers* folder (typically: C:\Program Files\Saleae LLC\Analyzers).
+For Windows SpiFlashSetup.msi will add analyzer to Saleae Logic installation folder (64 or 32 bit version).
+
+Manual installation
+Simply put SpiFlashAnalyzer.dll in the Saleae *Analyzers* folder (typically: C:\Program Files\Saleae LLC\Analyzers).
 
 # To be implemented
 - More manufacturers (Micron, Microchip, Issi, Cypress)
