@@ -18,10 +18,12 @@ Most flashes can work in SPI mode 0 and 3, analyzer can detect this set it autom
 
 # Installation
 
-For Windows SpiFlashSetup.msi will add analyzer to Saleae Logic installation folder (64 or 32 bit version).
+For Windows there are two msi files in prebuilt folder, that will add analyzer to the existing Saleae Logic installation folder.
 
 Manual installation
 Simply put SpiFlashAnalyzer.dll in the Saleae *Analyzers* folder (typically: C:\Program Files\Saleae LLC\Analyzers).
+
+For Linux and Mac OSX library needs to be build with Saleae provided build_analyzer.py script. Then library then can be copied to *Analyzer* folder in the Logic installation folder.
 
 # To be implemented
 - More manufacturers (Micron, Microchip, Issi, Cypress)
