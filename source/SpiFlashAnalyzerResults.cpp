@@ -201,7 +201,7 @@ void SpiFlashAnalyzerResults::GenerateExportFile(const char* file, DisplayBase d
 	U64 trigger_sample = mAnalyzer->GetTriggerSample();
 	U32 sample_rate = mAnalyzer->GetSampleRate();
 
-	file_stream << "Time [s],Value" << std::endl;
+	file_stream << "Time [s],Value" << '\n';
 
 	U64 num_frames = GetNumFrames();
 	for (U32 i = 0; i < num_frames; i++)
@@ -214,7 +214,7 @@ void SpiFlashAnalyzerResults::GenerateExportFile(const char* file, DisplayBase d
 		char number_str[128];
 		AnalyzerHelpers::GetNumberString(frame.mData1, display_base, 8, number_str, 128);
 
-		file_stream << time_str << "," << number_str << std::endl;
+		file_stream << time_str << "," << number_str << '\n';
 
 		if (UpdateExportProgressAndCheckForCancel(i, num_frames) == true)
 		{
