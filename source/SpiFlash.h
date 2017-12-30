@@ -99,6 +99,7 @@ enum CmdMode
 	CM_4 = BusMode::QUAD,
 	CM_12 = (BusMode::SINGLE | BusMode::DUAL),
 	CM_14 = (BusMode::SINGLE | BusMode::QUAD),
+	CM_24 = (BusMode::DUAL | BusMode::QUAD),
 	CM_124 = (BusMode::SINGLE | BusMode::DUAL | BusMode::QUAD),
 	CM_ALL = CM_124,
 };
@@ -495,6 +496,7 @@ static SpiCmdData *Cmd2(U8 ins, const char *n1, const char *n2 = nullptr, const 
 static SpiCmdData *Cmd12(U8 ins, const char *n1, const char *n2 = nullptr, const char *n3 = nullptr) { return Cmd(ins, CM_12, n1, n2, n3); }
 static SpiCmdData *Cmd4(U8 ins, const char *n1, const char *n2 = nullptr, const char *n3 = nullptr) { return Cmd(ins, CM_4, n1, n2, n3); }
 static SpiCmdData *Cmd14(U8 ins, const char *n1, const char *n2 = nullptr, const char *n3 = nullptr) { return Cmd(ins, CM_14, n1, n2, n3); }
+static SpiCmdData *Cmd24(U8 ins, const char *n1, const char *n2 = nullptr, const char *n3 = nullptr) { return Cmd(ins, CM_24, n1, n2, n3); }
 static SpiCmdData *Cmd124(U8 ins, const char *n1, const char *n2 = nullptr, const char *n3 = nullptr) { return Cmd(ins, CM_124, n1, n2, n3); }
 
 extern SpiFlash spiFlash;
