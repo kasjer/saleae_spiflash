@@ -308,6 +308,52 @@ void addCommands(SpiFlash &spiFlash)
 		+ Cmd1(0x38, "QPP", "Quad Input Page Program") + QUAD_DATA + ADDR + OP_DATA_WRITE
 		+ Cmd1(0xB0, "SUSP", "Erase/Program Suspend")
 		+ Cmd1(0x30, "RESM", "Erase/Program Resume")
+
+		+ CommandSet(0x20, "Micron", 0)
+		+ Register("Nonvolatile Configuration Register", 16) + Bit(15, 12, "DCC") + Bit(11, 9, "XIPMODE") + Bit(8, 6, "ODS") + Bit(4, "Reset/Hold") + Bit(3, "QUAD") + Bit(2, "DUAL")
+		+ Register("Volatile Configuration Register", 8) + Bit(7, 4, "DCC") + Bit(3, "XIP") + Bit(1, 0, "Wrap")
+		+ Register("Enhanced Volatile Configuration Register", 8) + Bit(7, "QUAD") + Bit(6, "DUAL") + Bit(4, "Reset/Hold") + Bit(3, "VPPACC") + Bit(2, 0, "ODS")
+		+ Register("Flag Status Register", 8) + Bit(7, "RDY") + Bit(6, "Erase suspend") + Bit(5, "Erase fail") + Bit(4, "Program fail") + Bit(3, "VPP fail") + Bit(2, "Program suspend") + Bit(1, "Protection fail")
+		+ Register("Lock Register", 8) + Bit(1, "SLD") + Bit(0, "SWL")
+
+		+ Cmd24(0xAF, "Multiple I/O READ ID") /* TODO: */
+		+ Cmd124(0x5A, "SFDP", "Read SFDP Register") + ADDR + DummyBytes(1) + OP_DATA_READ
+		+ Cmd124(0x0B, "R", "Fast Read") + ADDR + DummyBytes(1) + OP_DATA_READ
+		+ Cmd12(0x3B, "R", "R 1-1-2", "Fast Read Dual Ouput") + ADDR + DummyBytes(1) + DUAL_DATA + OP_DATA_READ
+		+ Cmd12(0xBB, "R", "R 1-2-2", "Fast Read Dual I/O") + DUAL_IO + ADDR + M + DummyBytes(1) + OP_DATA_READ
+		+ Cmd14(0x6B, "R", "R 1-1-4", "Fast Read Quad Output") + ADDR + DummyBytes(1) + QUAD_DATA + OP_DATA_READ
+		+ Cmd14(0xEB, "R", "R 1-4-4", "Fast Read Quad I/O") + QUAD_IO + ADDR + M + DummyBytes(2) + OP_DATA_READ
+
+		+ Cmd124(0x06, "WREN", "Write Enable")
+		+ Cmd124(0x04, "WRDI", "Write Disable")
+		+ Cmd124(0x05, "RDSR", "Read status register") + RegisterRead("Status Register-1")
+		+ Cmd124(0x01, "WS1", "Write status register") + RegisterWrite("Status Register-1")
+		+ Cmd124(0xE8, "RDLR", "Read lock register") + RegisterRead("Lock Register")
+		+ Cmd124(0xE5, "WRLR", "Write lock register") + RegisterWrite("Lock Register")
+		+ Cmd124(0x70, "RDFSR", "Read flag status register") + RegisterRead("Flag Status Register")
+		+ Cmd124(0x50, "WRFSR", "Write flag status register") + RegisterWrite("Flag Status Register")
+		+ Cmd124(0xB5, "RDNVCR", "Read nonvolatile configuration register") + RegisterRead("Nonvolatile Configuration Register")
+		+ Cmd124(0xB1, "WRNVCR", "Write nonvolatile configuration register") + RegisterWrite("Nonvolatile Configuration Register")
+		+ Cmd124(0x85, "RDVCR", "Read volatile configuration register") + RegisterRead("Volatile Configuration Register")
+		+ Cmd124(0x81, "WRVCR", "Write volatile configuration register") + RegisterWrite("Volatile Configuration Register")
+		+ Cmd124(0x85, "RDEVCR", "Read enhanced volatile configuration register") + RegisterRead("Enhanced Volatile Configuration Register")
+		+ Cmd124(0x81, "WREVCR", "Write enhanced volatile configuration register") + RegisterWrite("Enhanced Volatile Configuration Register")
+
+		+ Cmd124(0x02, "PP", "Page Program") + ADDR + OP_DATA_WRITE
+		+ Cmd12(0xA2, "DPP", "Dual Input Fast Program") + DUAL_DATA + ADDR + OP_DATA_WRITE
+		+ Cmd12(0xD2, "DPP", "Extended Dual Input Fast Program") + DUAL_IO + ADDR + OP_DATA_WRITE
+
+		+ Cmd14(0x32, "QPP", "Quad Input Fast program") + DUAL_DATA + ADDR + OP_DATA_WRITE
+		+ Cmd14(0x12, "QPP", "Extended Quad Input Fast Program") + DUAL_IO + ADDR + OP_DATA_WRITE
+
+		+ Cmd124(0x20, "SSE", "Subsector erase") + ADDR
+		+ Cmd124(0xD8, "SE", "Sector erase") + ADDR
+		+ Cmd124(0xC7, "BE", "Bulk erase") + ADDR
+		+ Cmd124(0x75, "SUSP", "Erase/Program Suspend")
+		+ Cmd124(0x7A, "RESM", "Erase/Program Resume")
+
+		+ Cmd124(0x75, "ROTP", "Read OTP Array") + OP_DATA_READ
+		+ Cmd124(0x7A, "POTP", "Program OTP Array") + OP_DATA_WRITE
 		;
 }
 
