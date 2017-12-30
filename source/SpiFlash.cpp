@@ -294,6 +294,20 @@ void addCommands(SpiFlash &spiFlash)
 		+ Cmd1(0x48, "Read Security Registers") + ADDR + DummyBytes(1) + OP_DATA_READ
 		+ Cmd1(0x44, "Erase Security Registers") + ADDR
 		+ Cmd1(0x42, "Program Security Registers") + ADDR + OP_DATA_WRITE
+
+		+ CommandSet(0x9D, "Issi", 0xEF)
+		+ Register("Function Register", 8) + Bit(7, "IRL3") + Bit(6, "IRL2") + Bit(5, "IRL1") + Bit(4, 2, "IRL0") + Bit(3, "ESUS") + Bit(2, "PSUS")
+		+ Cmd1(0x48, "Read Function Register") + RegisterRead("Function Register")
+		+ Cmd1(0x42, "Write Function Register") + RegisterWrite("Function Register")
+		+ Cmd1(0x68, "IRRD", "Read Information Row") + ADDR + DummyBytes(1) + OP_DATA_READ
+		+ Cmd1(0x62, "IRP", "Information Row Program") + ADDR + OP_DATA_WRITE
+		+ Cmd1(0x26, "SECUNLOCK", "Sector Unlock") + ADDR
+		+ Cmd1(0x24, "SECLOCK", "Sector Lock") + ADDR
+		+ Cmd1(0xD7, "SE", "Sector erase") + ADDR
+		/* 0x38 Differes from Winbond */
+		+ Cmd1(0x38, "QPP", "Quad Input Page Program") + QUAD_DATA + ADDR + OP_DATA_WRITE
+		+ Cmd1(0xB0, "SUSP", "Erase/Program Suspend")
+		+ Cmd1(0x30, "RESM", "Erase/Program Resume")
 		;
 }
 
