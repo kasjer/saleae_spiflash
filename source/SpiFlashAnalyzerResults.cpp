@@ -101,7 +101,7 @@ void SpiFlashAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& chann
 			const char *s[4] = { 0 };
 			for (i = 0; i < cmd->mNames.size(); ++i)
 				AddResultString(cmd->mNames[i].c_str());
-			if (cmd->mHasAddr)
+			if (cmd->mAddressBits)
 			{
 				U32 addr = U32(frame.mData1 >> 24);
 				s[0] = "  A=";
@@ -239,7 +239,7 @@ void SpiFlashAnalyzerResults::GenerateFrameTabularText(U64 frame_index, DisplayB
 		if (U64(cmd) > 0x100)
 		{
 			const char *s[4] = { 0 };
-			if (cmd->mHasAddr)
+			if (cmd->mAddressBits)
 			{
 				U32 addr = U32(frame.mData1 >> 24);
 				s[0] = "  A=";

@@ -124,6 +124,10 @@ enum GeneratedData
 enum CmdFeature
 {
 	ADDR,
+	ADDR1,
+	ADDR2,
+	ADDR3,
+	ADDR4,
 	M,
 	DUAL_IO,
 	DUAL_DATA,
@@ -183,7 +187,7 @@ public:
 	U8 mCode;
 	CmdMode mMode;
 	CmdOp mCmdOp;
-	bool mHasAddr;
+	uint8_t mAddressBits; // 0 - command does not have address, 0xFF = default length
 	bool mContinuousRead;
 	bool mDummyBytes;
 	bool mDummyCycles;
@@ -195,7 +199,7 @@ public:
 	std::vector<RegisterData *> mRegs;
 public:
 	SpiCmdData(U8 code, CmdMode mode, const char *n1, const char *n2 = nullptr, const char *n3 = nullptr) : mCode(code), mMode(mode),
-		mCmdOp(OP_NO_DATA), mHasAddr(false), mDummyBytes(false), mDummyCycles(false), mContinuousRead(false),
+		mCmdOp(OP_NO_DATA), mAddressBits(0), mDummyBytes(false), mDummyCycles(false), mContinuousRead(false),
 		mModeChange(0), mModeArgs(0), mModeData(0)
 	{
 		mNames.push_back(std::string(n1));
@@ -223,7 +227,13 @@ public:
 		switch (feature)
 		{
 		case ADDR:
-			mHasAddr = true;
+			mAddressBits = 0xFF;
+			break;
+		case ADDR1:
+		case ADDR2:
+		case ADDR3:
+		case ADDR4:
+			mAddressBits = (feature - ADDR) * 8;
 			break;
 		case M:
 			mContinuousRead = true;
@@ -369,6 +379,7 @@ class SpiFlash
 	BusMode mCurBusMode;
 	BusMode mDefBusMode;
 	SpiMode mSpiMode;
+	U32 mAddressBits;
 	bool mDataIn;
 public:
 	void SetSpiMode(SpiMode mode) { mSpiMode = mode; }

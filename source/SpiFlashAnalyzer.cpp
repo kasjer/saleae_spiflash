@@ -415,10 +415,11 @@ void SpiFlashAnalyzer::AnalyzeCommandBits()
 		if (cmd.code > 0x100)
 		{
 			UpdateBusMode((BusMode)cmd.data->mModeArgs);
-			if (cmd.data->mHasAddr)
+			if (cmd.data->mAddressBits)
 			{
+				U32 addressLength = (cmd.data->mAddressBits != 0xFF) ? cmd.data->mAddressBits  : mSettings->mAddressLength;
 				addr = 0;
-				if (ExtractBits(start, end, addr, mSettings->mAddressLength) < 0)
+				if (ExtractBits(start, end, addr, addressLength) < 0)
 					break;
 				AddFrame(start, end, addr, 0, FT_OUT_ADDR24, 0);
 				cmdExtra = U64(addr) << 24;

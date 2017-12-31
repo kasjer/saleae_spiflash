@@ -72,11 +72,16 @@ void SpiFlash::GenerateCommandBits(SpiCmdData *cmd, std::vector<U8> &bits)
 		mCurBusMode = BusMode(cmd->mModeArgs);
 
 	// generate address
-	if (cmd->mHasAddr)
+	if (cmd->mAddressBits)
 	{
 		uint32_t addr = rand();
-		GenerateByte(U8(addr >> 16), bits);
-		GenerateByte(U8(addr >> 8), bits);
+		U32 addressBits = (cmd->mAddressBits != 0xFF) ? cmd->mAddressBits : mAddressBits;
+		if (addressBits > 24)
+			GenerateByte(U8(addr >> 24), bits);
+		if (addressBits > 16)
+			GenerateByte(U8(addr >> 16), bits);
+		if (addressBits > 8)
+			GenerateByte(U8(addr >> 8), bits);
 		GenerateByte(U8(addr), bits);
 	}
 
@@ -357,7 +362,7 @@ void addCommands(SpiFlash &spiFlash)
 		;
 }
 
-SpiFlash::SpiFlash() : mSpiMode(SPI_MODE0), mDefBusMode(SINGLE), mCurBusMode(SINGLE), mCurrentCmd(nullptr), mActiveCmdSet(nullptr), mDataIn(false)
+SpiFlash::SpiFlash() : mSpiMode(SPI_MODE0), mDefBusMode(SINGLE), mCurBusMode(SINGLE), mCurrentCmd(nullptr), mActiveCmdSet(nullptr), mDataIn(false), mAddressBits(24)
 {
 	addCommands(*this);
 }
