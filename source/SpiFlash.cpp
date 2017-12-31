@@ -359,6 +359,32 @@ void addCommands(SpiFlash &spiFlash)
 
 		+ Cmd124(0x75, "ROTP", "Read OTP Array") + OP_DATA_READ
 		+ Cmd124(0x7A, "POTP", "Program OTP Array") + OP_DATA_WRITE
+
+		+ CommandSet(0xBF, "Microchip", 0xEF)
+		+ Register("Status Register", 8) + Bit(7, "BUSY") + Bit(5, "SEC") + Bit(4, "WPLD") + Bit(3, "WSP") + Bit(2, "WSE") + Bit(1, "WEL") + Bit(0, "BUSY")
+		+ Register("Configuration Register", 8) + Bit(7, "WPEN") + Bit(3, "BPNV") + Bit(1, "IOC")
+		+ Cmd1(0x05, "RDSR", "Read status register") + RegisterRead("Status Register")
+		+ Cmd4(0x05, "RDSR", "Read status register") + DummyBytes(1) + RegisterRead("Status Register")
+		+ Cmd1(0x35, "RDCR", "Read configuration register") + RegisterWrite("Configuration Register")
+		+ Cmd4(0x35, "RDCR", "Read configuration register") + DummyBytes(1) + RegisterWrite("Configuration Register")
+		+ Cmd4(0x0B, "R", "Fast Read") + ADDR + DummyBytes(3) + OP_DATA_READ
+		+ Cmd1(0xEB, "R", "R 1-4-4", "Fast Read Quad I/O") + QUAD_IO + ADDR + M + DummyBytes(3) + OP_DATA_READ
+		+ Cmd14(0xC0, "SB", "Set Burst Length") + OP_DATA_WRITE
+		+ Cmd4(0x0C, "RBSQI", "Burst Read with Wrap") + ADDR + M + DummyBytes(3) + OP_DATA_READ
+		+ Cmd1(0xEC, "RBSPI", "Burst Read with Wrap") + ADDR + M + DummyBytes(3) + OP_DATA_READ
+		+ Cmd14(0xB0, "SUSP", "Erase/Program Suspend")
+		+ Cmd14(0x30, "RESM", "Erase/Program Resume")
+
+		+ Cmd1(0x72, "RBPR", "Read Block Protection Register") + OP_DATA_READ
+		+ Cmd4(0x72, "RBPR", "Read Block Protection Register") + DummyBytes(1) + OP_DATA_READ
+		+ Cmd14(0x8D, "LBPR", "Lock Down Block Protection Register")
+		+ Cmd14(0xE8, "nVWLDR", "Non-volatile Write Lock Down Register") + OP_DATA_WRITE
+		+ Cmd14(0x98, "ULBPR", "Global Block Protection Unlock")
+		+ Cmd1(0x88, "RSID", "Read Security ID") + ADDR2 + DummyBytes(1) + OP_DATA_READ
+		+ Cmd4(0x88, "RSID", "Read Security ID") + ADDR2 + DummyBytes(3) + OP_DATA_READ
+		+ Cmd14(0xA5, "PSID", "Program User Security ID Area") + ADDR2 + OP_DATA_WRITE
+		+ Cmd14(0x85, "LSID", "Lockout Security ID Programming")
+
 		;
 }
 
