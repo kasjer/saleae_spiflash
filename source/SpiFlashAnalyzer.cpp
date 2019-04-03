@@ -97,8 +97,22 @@ void SpiFlashAnalyzer::Setup()
 		mClockIdleState = BIT_LOW;
 	else if (mSettings->mSpiMode == 3)
 		mClockIdleState = BIT_HIGH;
+
 	mDefaultBusMode = BusMode(mSettings->mBusMode);
 	mCurrentBusMode = mDefaultBusMode;
+	// Continues read mode selected as starting point
+	U8 manufacturer = (U8)(mSettings->mContinuousRead >> 8);
+	U8 code = (U8)mSettings->mContinuousRead;
+	CmdSet *cmdSet = spiFlash.GetCommandSet(manufacturer);
+	if (cmdSet)
+	{
+		SpiCmdData *cmd = cmdSet->GetCommand(mCurrentBusMode, code);
+		if (cmd != NULL)
+		{
+			mLockedCmd = cmd;
+			mCurrentBusMode = BusMode(cmd->mModeData);
+		}
+	}
 	mCachedClockCount = 0;
 	pos = 0;
 }

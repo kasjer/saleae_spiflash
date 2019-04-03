@@ -93,6 +93,25 @@ SpiFlashAnalyzerSettings::SpiFlashAnalyzerSettings() :
 	mBusModeInterface->AddNumber(4, "Quad", "");
 	mBusModeInterface->SetNumber(mBusMode);
 
+	mContinuousReadInterface.reset(new AnalyzerSettingInterfaceNumberList());
+	mContinuousReadInterface->SetTitleAndTooltip("Continous read", "Command that is continuous read at start of ananlyzes");
+	mContinuousReadInterface->AddNumber(0, "command mode", "");
+	for (size_t i = 0; i < spiFlash.getCommandSets().size(); ++i)
+	{
+		CmdSet *cmdSet = spiFlash.getCommandSets()[i];
+		std::vector<const SpiCmdData *> continueousReadCmds;
+		cmdSet->GetContinousReadCommands(continueousReadCmds);
+
+		for (size_t j = 0; j < continueousReadCmds.size(); ++j)
+		{
+			char t[100];
+			const SpiCmdData *cmd = continueousReadCmds[j];
+			snprintf(t, 100, "%02XH %s (%s)", cmd->GetCode(), cmd->mNames.back().c_str(), cmdSet->GetName().c_str());
+			mContinuousReadInterface->AddNumber((cmdSet->GetId() << 8) + cmd->GetCode(), t, "");
+		}
+	}
+	mContinuousReadInterface->SetNumber(0);
+
 	AddInterface(mChipSelectInterface.get());
 	AddInterface(mClockInterface.get());
 	AddInterface(mMosiInterface.get());
@@ -103,6 +122,7 @@ SpiFlashAnalyzerSettings::SpiFlashAnalyzerSettings() :
 	AddInterface(mAddressLengthInterface.get());
 	AddInterface(mSpiModeInterface.get());
 	AddInterface(mBusModeInterface.get());
+	AddInterface(mContinuousReadInterface.get());
 
 	AddExportOption(0, "Export as text/csv file");
 	AddExportExtension(0, "text", "txt");
@@ -128,6 +148,7 @@ bool SpiFlashAnalyzerSettings::SetSettingsFromInterfaces()
 	mAddressLength = U32(mAddressLengthInterface->GetNumber());
 	mSpiMode = U32(mSpiModeInterface->GetNumber());
 	mBusMode = U32(mBusModeInterface->GetNumber());
+	mContinuousRead = U32(mContinuousReadInterface->GetNumber());
 	mChipSelect = mChipSelectInterface->GetChannel();
 	mClock = mClockInterface->GetChannel();
 	mMosi = mMosiInterface->GetChannel();
@@ -155,6 +176,7 @@ void SpiFlashAnalyzerSettings::UpdateInterfacesFromSettings()
 	mAddressLengthInterface->SetNumber(mAddressLength);
 	mSpiModeInterface->SetNumber(mSpiMode);
 	mBusModeInterface->SetNumber(mBusMode);
+	mContinuousReadInterface->SetNumber(mContinuousRead);
 	mChipSelectInterface->SetChannel(mChipSelect);
 	mClockInterface->SetChannel(mClock);
 	mMosiInterface->SetChannel(mMosi);
@@ -172,6 +194,7 @@ void SpiFlashAnalyzerSettings::LoadSettings(const char* settings)
 	text_archive >> mAddressLength;
 	text_archive >> mSpiMode;
 	text_archive >> mBusMode;
+	text_archive >> mContinuousRead;
 	text_archive >> mChipSelect;
 	text_archive >> mClock;
 	text_archive >> mMosi;
@@ -198,6 +221,7 @@ const char* SpiFlashAnalyzerSettings::SaveSettings()
 	text_archive << mAddressLength;
 	text_archive << mSpiMode;
 	text_archive << mBusMode;
+	text_archive << mContinuousRead;
 	text_archive << mChipSelect;
 	text_archive << mClock;
 	text_archive << mMosi;

@@ -330,6 +330,20 @@ public:
 			std::unique(cmds.begin(), cmds.end());
 		}
 	}
+	void GetContinousReadCommands(std::vector<const SpiCmdData *> &cmds) const
+	{
+		// Add commands that are valid for specifed bus mode
+		for (size_t i = 0; i < mCommands.size(); ++i)
+			if (mCommands[i]->mContinuousRead)
+				cmds.push_back(mCommands[i].get());
+
+		// If parent existed, sort and remove duplicates
+		if (mParent)
+		{
+			std::sort(cmds.begin(), cmds.end());
+			std::unique(cmds.begin(), cmds.end());
+		}
+	}
 	SpiCmdData *GetCommand(BusMode mode, U8 code)
 	{
 		int key;
