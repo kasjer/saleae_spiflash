@@ -227,8 +227,8 @@ void addCommands(SpiFlash &spiFlash)
 
 		+ Cmd1(0x77, "Set Burst with Wrap") + QUAD_IO + DummyBytes(3) + OP_DATA_WRITE
 		+ Cmd1(0x32, "QPP", "Quad Input Page Program") + QUAD_DATA + ADDR + OP_DATA_WRITE
-		+ Cmd1(0x92, "MFID", "Read manufacturer, Device ID DUAL I/O") + DUAL_IO + ADDR + M + OP_DATA_READ
-		+ Cmd1(0x94, "MFID", "Read manufacturer, Device ID QUAD I/O") + QUAD_IO + ADDR + M + DummyBytes(2) + OP_DATA_READ
+		+ Cmd1(0x92, "MFID", "Read manufacturer, Device ID DUAL I/O") + DUAL_IO + ADDR + DummyBytes(1) + OP_DATA_READ
+		+ Cmd1(0x94, "MFID", "Read manufacturer, Device ID QUAD I/O") + QUAD_IO + ADDR + DummyBytes(3) + OP_DATA_READ
 		+ Cmd1(0x4B, "ID", "Read Unique ID number") + DummyBytes(4) + OP_DATA_READ
 		+ Cmd1(0x44, "Erase Security Registers") + ADDR
 		+ Cmd1(0x42, "Program Security Registers") + ADDR + OP_DATA_WRITE
@@ -271,7 +271,7 @@ void addCommands(SpiFlash &spiFlash)
 		+ Cmd4(0x0C, "BRW", "Burst Read with Wrap") + ADDR + M + DummyBytes(1) + OP_DATA_READ
 		+ Cmd4(0xC0, "SRP", "Set Read Parameters") + OP_DATA_WRITE
 		+ Cmd14(0x33, "QPP", "Quad Input Page Program") + QUAD_DATA + ADDR + OP_DATA_WRITE
-		+ Cmd1(0x94, "MFID", "Read manufacturer, Device ID QUAD I/O") + QUAD_IO + ADDR + M + DummyBytes(2) + OP_DATA_READ
+		+ Cmd1(0x94, "MFID", "Read manufacturer, Device ID QUAD I/O") + QUAD_IO + ADDR + DummyBytes(3) + OP_DATA_READ
 		+ Cmd14(0xE7, "R", "R 1-4-4", "Word Read Quad I/O") + QUAD_IO + ADDR + M + DummyBytes(1) + OP_DATA_READ
 		+ Cmd1(0x77, "Set Burst with Wrap") + QUAD_IO + DummyBytes(3) + OP_DATA_WRITE
 
