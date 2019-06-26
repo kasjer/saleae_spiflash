@@ -257,6 +257,7 @@ void addCommands(SpiFlash &spiFlash)
 		+ Cmd1(0x2F, "WRSCUR", "Write Security Register") + RegisterWrite("Security Register")
 		+ Cmd1(0xAB, "RES", "Read Electronic ID") + DummyBytes(3) + OP_DATA_READ
 		+ Cmd1(0x32, "QPP", "Quad Input Page Program") + QUAD_DATA + ADDR + OP_DATA_WRITE
+		+ Cmd1(0x38, "QPP", "Quad I/O Page Program") + QUAD_IO + ADDR + OP_DATA_WRITE
 
 		+ CommandSet(0xC8, "GigaDevice", 0xEF)
 		+ Register("Status Register-1", 8) + Bit(7, "SRP0") + Bit(6, 2, "BPB") + Bit(1, "WEL") + Bit(0, "BUSY")
