@@ -443,7 +443,7 @@ void SpiFlashAnalyzer::AnalyzeCommandBits()
 				if (ExtractBits(start, end, val, 8) < 0)
 					break;
 				m = U8(val);
-				mLockedCmd = m & 0x10 ? nullptr : cmd.data;
+				mLockedCmd = ((m & 0x30) == 0x20) ? cmd.data : nullptr;
 				AddFrame(start, end, val, 0, FT_M, 0);
 			}
 
