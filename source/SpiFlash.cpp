@@ -188,7 +188,7 @@ void addCommands(SpiFlash &spiFlash)
 		+ Cmd1(0x0B, "R", "Fast Read") + ADDR + DummyBytes(1) + OP_DATA_READ
 		+ Cmd1(0x3B, "R", "R 1-1-2", "Fast Read Dual Ouput") + ADDR + DummyBytes(1) + DUAL_DATA + OP_DATA_READ
 		+ Cmd1(0x6B, "R", "R 1-1-4", "Fast Read Quad Output") + ADDR + DummyBytes(1) + QUAD_DATA + OP_DATA_READ
-		+ Cmd1(0xBB, "R", "R 1-2-2", "Fast Read Dual I/O") + DUAL_IO + ADDR + M + DummyBytes(1) + OP_DATA_READ
+		+ Cmd1(0xBB, "R", "R 1-2-2", "Fast Read Dual I/O") + DUAL_IO + ADDR + M + OP_DATA_READ
 		+ Cmd1(0xEB, "R", "R 1-4-4", "Fast Read Quad I/O") + QUAD_IO + ADDR + M + DummyBytes(2) + OP_DATA_READ
 		+ Cmd14(0x02, "PP", "Page Program") + ADDR + OP_DATA_WRITE
 		+ Cmd14(0x20, "SE", "Sector erase") + ADDR
