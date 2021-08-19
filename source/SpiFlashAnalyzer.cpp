@@ -368,7 +368,7 @@ int SpiFlashAnalyzer::ExtractMosiMiso(U64 &start, U64 &end, U8 &mosi, U8 &miso)
 			if (mMosi)
 				mosi = (mosi << 1) + (mMosi->GetBitState() == BIT_HIGH ? 1 : 0);
 			if (mMiso)
-				miso = (miso << 1) + (mMiso->GetBitState() == BIT_HIGH ? 2 : 0);
+				miso = (miso << 1) + (mMiso->GetBitState() == BIT_HIGH ? 1 : 0);
 		}
 		end = mCachedClocks[clocksPerByte - 1] >> 1;
 	}
